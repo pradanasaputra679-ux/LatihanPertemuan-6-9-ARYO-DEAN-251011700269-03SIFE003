@@ -89,14 +89,27 @@
             </div>
         @endif
 
-        <!-- TOMBOL TAMBAH -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <!-- JUDUL DAN TOMBOL -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
             <h5 class="fw-bold mb-0">Daftar Project</h5>
 
-            <a href="{{ route('admin.projects.create') }}"
-               class="btn btn-primary">
-                + Tambah Project
-            </a>
+            <div class="d-flex gap-2">
+
+                <!-- EXPORT PDF -->
+                <a href="{{ route('admin.projects.export.pdf') }}"
+                   class="btn btn-danger"
+                   target="_blank">
+                    Export PDF
+                </a>
+
+                <!-- TAMBAH PROJECT -->
+                <a href="{{ route('admin.projects.create') }}"
+                   class="btn btn-primary">
+                    + Tambah Project
+                </a>
+
+            </div>
         </div>
 
         <!-- TABEL PROJECT -->
@@ -120,12 +133,10 @@
                     @forelse ($projects as $project)
 
                         <tr>
-                            <!-- NOMOR -->
                             <td>
                                 {{ $projects->firstItem() + $loop->index }}
                             </td>
 
-                            <!-- GAMBAR -->
                             <td>
                                 @if ($project->image)
                                     <img
@@ -140,7 +151,6 @@
                                 @endif
                             </td>
 
-                            <!-- NAMA PROJECT -->
                             <td>
                                 <strong>{{ $project->title }}</strong>
                                 <br>
@@ -149,12 +159,10 @@
                                 </small>
                             </td>
 
-                            <!-- TEKNOLOGI -->
                             <td>
                                 {{ $project->technologies ?? '-' }}
                             </td>
 
-                            <!-- STATUS -->
                             <td>
                                 @if ($project->status == 'Published')
                                     <span class="badge bg-success">
@@ -167,7 +175,6 @@
                                 @endif
                             </td>
 
-                            <!-- TOMBOL AKSI -->
                             <td>
                                 <div class="d-flex gap-2">
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ProjectPdfController;
 
 Route::get('/', [PortfolioController::class, 'index'])->name('home');
 
@@ -23,22 +24,28 @@ Route::post('/admin/login', [AuthController::class, 'login'])
 // Halaman Admin yang dilindungi login
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
-  Route::get('/dashboard', function () {
-    $totalProjects = \App\Models\Project::count();
+    // Dashboard Admin
+    Route::get('/dashboard', function () {
+        $totalProjects = \App\Models\Project::count();
 
-    $projects = \App\Models\Project::latest()
-        ->take(6)
-        ->get();
+        $projects = \App\Models\Project::latest()
+            ->take(6)
+            ->get();
 
-    return view('admin.dashboard', compact(
-        'totalProjects',
-        'projects'
-    ));
-})->name('dashboard');
+        return view('admin.dashboard', compact(
+            'totalProjects',
+            'projects'
+        ));
+    })->name('dashboard');
 
+    // Export Laporan Project ke PDF
+    Route::get('/projects/export/pdf', [ProjectPdfController::class, 'export'])
+        ->name('projects.export.pdf');
 
+    // CRUD Project
     Route::resource('/projects', ProjectController::class);
 
+    // Logout Admin
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 });
